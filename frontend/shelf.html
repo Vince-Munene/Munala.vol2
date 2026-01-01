@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Buy - Under The Mango Tree</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Purchase the villager's featured book." />
+    <style>
+        /* Lightweight page-specific adjustments to ensure book cover centers */
+        .page-center { display:flex; align-items:center; justify-content:center; min-height:70vh; }
+    </style>
+</head>
+<body>
+    <header style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+        <a href="index.html" class="nav-button" style="text-decoration:none;">← Back</a>
+        <h2 style="margin:0; font-family:inherit;">The Shelf</h2>
+        <div style="width:64px"></div>
+    </header>
+
+    <main class="page-center">
+        <section class="book-page">
+            <div class="book-cover">
+                <img src="/assets/under-the-mango-tree-cover.png" alt="Book cover: Under The Mango Tree">
+            </div>
+
+            <div class="book-info">
+                <h3 class="book-title">Under The Mango Tree</h3>
+                <p class="book-author">by Vic Munala</p>
+                <p class="book-price">KES 1,200</p>
+                <p class="book-desc">A reflective collection that explores the full range of the human experience, dancing around the themes of losing self and trying to find your way home.</p>
+                <label for="quantity">Quantity</label>
+                <select id="quantity" aria-label="Quantity">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+
+                <button id="buyBtn" class="buy-button">Buy Now</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for purchase confirmation -->
+    <div id="purchaseModal" class="modal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <h3 id="modalTitle">Confirm Purchase</h3>
+            <p id="orderSummary"></p>
+            <div style="display:flex; gap:12px; margin-top:16px;">
+                <button id="confirmPurchase" class="buy-button">Confirm</button>
+                <button id="cancelPurchase" class="buy-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const buyBtn = document.getElementById('buyBtn');
+        const modal = document.getElementById('purchaseModal');
+        const orderSummary = document.getElementById('orderSummary');
+        const confirmPurchase = document.getElementById('confirmPurchase');
+        const cancelPurchase = document.getElementById('cancelPurchase');
+        const modalClose = document.querySelector('.modal-close');
+
+        function openModal() {
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        buyBtn.addEventListener('click', () => {
+            const qty = document.getElementById('quantity').value;
+            const price = 1200; // KES
+            const total = qty * price;
+            orderSummary.textContent = `You are purchasing ${qty} copy(ies). Total: KES ${total}.`;
+            openModal();
+        });
+
+        cancelPurchase.addEventListener('click', closeModal);
+        modalClose.addEventListener('click', closeModal);
+
+        confirmPurchase.addEventListener('click', () => {
+            // Simulate purchase success then redirect to the hut
+            confirmPurchase.disabled = true;
+            confirmPurchase.textContent = 'Processing...';
+            setTimeout(() => {
+                // Show a brief thank-you then go home
+                orderSummary.textContent = 'Thank you! Your order is placed.';
+                confirmPurchase.textContent = 'Done';
+                setTimeout(() => window.location.href = 'index.html', 1400);
+            }, 800);
+        });
+    </script>
+</body>
+</html>
